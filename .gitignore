@@ -1,0 +1,4 @@
+node_modules/
+.jev-answers/
+*.log
+.DS_Store

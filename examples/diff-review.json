@@ -1,0 +1,23 @@
+{
+  "files": [
+    { "path": "/tmp/jev/change.diff", "label": "git diff of the change under review" },
+    "app/Services/PaymentService.php"
+  ],
+  "base_dir": "/abs/path/to/project",
+  "context": "Rules for this repository:\n1. Card numbers and CVVs must never be written to logs.\n2. Every database write in a request handler must run inside a transaction.\n3. Public controller methods must validate input with a Form Request.",
+  "questions": {
+    "card_logged": {
+      "type": "noul",
+      "instructions": "Does any changed line write a card number or CVV to a log?"
+    },
+    "transaction": {
+      "type": "noul",
+      "instructions": "Does every changed database write in a request handler run inside a transaction?"
+    },
+    "validated": {
+      "type": "noul",
+      "instructions": "Do all changed public controller methods validate their input with a Form Request?"
+    }
+  },
+  "label": "payment-review"
+}

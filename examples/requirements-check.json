@@ -1,0 +1,19 @@
+{
+  "files": [
+    "src/**/*.js",
+    { "path": "docs/requirements.md", "label": "requirements" }
+  ],
+  "base_dir": "/abs/path/to/project",
+  "questions": {
+    "rate_limit": {
+      "type": "noul",
+      "instructions": "Does the code enforce the rate limit described in the requirements for the login endpoint?",
+      "criteria": {
+        "true": "The login endpoint rejects requests over the documented limit.",
+        "false": "No rate limiting is applied to the login endpoint, or the limit differs from the requirements."
+      }
+    }
+  },
+  "label": "requirements-check",
+  "model": "jev-latest"
+}

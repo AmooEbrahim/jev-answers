@@ -1,0 +1,21 @@
+{
+  "files": [{ "path": "/tmp/jev/change.diff", "label": "git diff of the change under review" }],
+  "context": "This is a pull request for our web shop.",
+  "questions": {
+    "layer": {
+      "type": "choice",
+      "instructions": "Which layer does this change mainly touch?",
+      "criteria": {
+        "frontend": "UI code: templates, components, styles",
+        "backend": "server code: controllers, services, jobs",
+        "database": "schema, migrations or queries"
+      }
+    },
+    "risk": {
+      "type": "score",
+      "instructions": "How risky is deploying this change to production?",
+      "criteria": ["No risk", "Low risk", "Moderate risk", "High risk"]
+    }
+  },
+  "label": "triage"
+}

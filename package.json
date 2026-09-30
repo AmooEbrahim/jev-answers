@@ -1,0 +1,41 @@
+{
+  "name": "jev-answers",
+  "version": "0.1.0",
+  "description": "MCP server and CLI that send files and typed questions to TypeSafe's Jev decision model and return the raw answer.",
+  "type": "module",
+  "bin": {
+    "jev-answers": "bin/jev-answers.js"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "files": [
+    "bin",
+    "src",
+    "README.md",
+    "LICENSE",
+    "CHANGELOG.md"
+  ],
+  "scripts": {
+    "test": "node --test \"test/**/*.test.js\""
+  },
+  "license": "MIT",
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "jev",
+    "typesafe",
+    "claude-code",
+    "opencode",
+    "codex",
+    "code-review"
+  ],
+  "homepage": "https://github.com/AmooEbrahim/jev-answers#readme",
+  "bugs": {
+    "url": "https://github.com/AmooEbrahim/jev-answers/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AmooEbrahim/jev-answers.git"
+  }
+}
