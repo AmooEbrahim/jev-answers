@@ -1,5 +1,9 @@
 # jev-answers
 
+[![npm](https://img.shields.io/npm/v/jev-answers)](https://www.npmjs.com/package/jev-answers)
+[![CI](https://github.com/AmooEbrahim/jev-answers/actions/workflows/ci.yml/badge.svg)](https://github.com/AmooEbrahim/jev-answers/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+
 A small MCP server and CLI that sends files and typed questions to TypeSafe's **Jev** decision model and returns the raw answer. Every request gets its own session folder that keeps the inputs, the exact request and the response.
 
 - Zero dependencies, plain Node.js (>= 22), no build step.
@@ -43,15 +47,16 @@ collect  ->  build  ->  send
 Run the setup wizard. It asks for your provider, API key and model, writes the config file, and offers to register the server with the MCP clients it finds on your machine.
 
 ```sh
-# straight from GitHub
-npx -y github:AmooEbrahim/jev-answers setup
-
-# once published on npm
 npx -y jev-answers setup
 
-# from a clone
+# or the latest main branch straight from GitHub
+npx -y github:AmooEbrahim/jev-answers setup
+
+# or from a clone
 node bin/jev-answers.js setup
 ```
+
+npx caches packages. To pick up a new release, run `npx -y jev-answers@latest --version` once.
 
 Get a key at [console.typesafe.ai](https://console.typesafe.ai) (TypeSafe direct) or [openrouter.ai/keys](https://openrouter.ai/keys) (OpenRouter). The key is stored in the config file (mode 0600), so your client configs need no environment variables.
 
@@ -66,18 +71,18 @@ jev-answers setup --provider typesafe --api-key "$KEY" --yes --register claude,c
 
 ### Manual client configuration
 
-Use whichever launch command fits: `npx -y github:AmooEbrahim/jev-answers serve`, or `/absolute/path/to/node /absolute/path/to/bin/jev-answers.js serve` for a clone (setup writes the full path of the running Node). On Windows, setup prints the registration commands instead of running them.
+Use whichever launch command fits: `npx -y jev-answers serve`, or `/absolute/path/to/node /absolute/path/to/bin/jev-answers.js serve` for a clone (setup writes the full path of the running Node). On Windows, setup prints the registration commands instead of running them.
 
 Claude Code:
 
 ```sh
-claude mcp add --scope user jev-answers -- npx -y github:AmooEbrahim/jev-answers serve
+claude mcp add --scope user jev-answers -- npx -y jev-answers serve
 ```
 
 Codex:
 
 ```sh
-codex mcp add jev-answers -- npx -y github:AmooEbrahim/jev-answers serve
+codex mcp add jev-answers -- npx -y jev-answers serve
 ```
 
 or in `~/.codex/config.toml`:
@@ -85,13 +90,13 @@ or in `~/.codex/config.toml`:
 ```toml
 [mcp_servers.jev-answers]
 command = "npx"
-args = ["-y", "github:AmooEbrahim/jev-answers", "serve"]
+args = ["-y", "jev-answers", "serve"]
 ```
 
 OpenCode:
 
 ```sh
-opencode mcp add --global jev-answers -- npx -y github:AmooEbrahim/jev-answers serve
+opencode mcp add --global jev-answers -- npx -y jev-answers serve
 ```
 
 or in `~/.config/opencode/opencode.json`:
@@ -101,7 +106,7 @@ or in `~/.config/opencode/opencode.json`:
   "mcp": {
     "jev-answers": {
       "type": "local",
-      "command": ["npx", "-y", "github:AmooEbrahim/jev-answers", "serve"],
+      "command": ["npx", "-y", "jev-answers", "serve"],
       "enabled": true
     }
   }
@@ -115,7 +120,7 @@ Cursor, Claude Desktop and other clients that use `mcpServers`:
   "mcpServers": {
     "jev-answers": {
       "command": "npx",
-      "args": ["-y", "github:AmooEbrahim/jev-answers", "serve"]
+      "args": ["-y", "jev-answers", "serve"]
     }
   }
 }

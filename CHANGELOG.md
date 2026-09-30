@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.1
+
+- Published on npm: `setup` now registers `npx -y jev-answers serve` (instead of the GitHub spec), and the README install and client examples use the npm package.
+
 ## 0.1.0
 
 - Initial release.

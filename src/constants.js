@@ -4,8 +4,7 @@ const pkg = JSON.parse(readFileSync(new URL('../package.json', import.meta.url),
 
 export const NAME = 'jev-answers';
 export const VERSION = pkg.version;
-// Switch to plain "jev-answers" once the package is published on npm.
-export const NPX_SPEC = 'github:AmooEbrahim/jev-answers';
+export const NPX_SPEC = 'jev-answers';
 export const TOOL_NAME = 'jev_ask';
 
 export const DEFAULTS = {
