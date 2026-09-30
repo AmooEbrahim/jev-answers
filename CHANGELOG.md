@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.2
+
+- Fix: interactive prompts crashed on a real terminal (`setup`, and `prune` without `--yes`) with "Cannot read properties of undefined (reading 'trim')". Added a pseudo-terminal test for the wizard.
+
 ## 0.1.1
 
 - Published on npm: `setup` now registers `npx -y jev-answers serve` (instead of the GitHub spec), and the README install and client examples use the npm package.

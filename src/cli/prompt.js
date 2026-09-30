@@ -35,7 +35,8 @@ export async function createPrompter() {
   closed.catch(() => {}); // only matters while a question is pending
   return {
     async ask(question, { secret = false } = {}) {
-      const pending = rl.question(question);
+      // Callback API: rl.question() itself returns undefined.
+      const pending = new Promise((resolve) => rl.question(question, resolve));
       muted = secret;
       try {
         return (await Promise.race([pending, closed])).trim();
