@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.3
+
+- New optional agent skill (`skills/jev-answers/SKILL.md`): teaches an agent when and how to use `jev_ask`. Install it with `jev-answers skill install` (Claude Code, and Codex / OpenCode via `~/.agents/skills`), or let `setup` offer it (`setup --yes --skill claude,agents`). Also `skill uninstall`, `skill status`, `skill show`; `doctor` reports the skill status.
+- The MCP server `instructions` now say when to use `jev_ask`, so clients that defer tool descriptions still get the "when".
+
 ## 0.1.2
 
 - Fix: interactive prompts crashed on a real terminal (`setup`, and `prune` without `--yes`) with "Cannot read properties of undefined (reading 'trim')". Added a pseudo-terminal test for the wizard.

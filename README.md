@@ -60,7 +60,7 @@ npx caches packages. To pick up a new release, run `npx -y jev-answers@latest --
 
 Get a key at [console.typesafe.ai](https://console.typesafe.ai) (TypeSafe direct) or [openrouter.ai/keys](https://openrouter.ai/keys) (OpenRouter). The key is stored in the config file (mode 0600), so your client configs need no environment variables.
 
-Switching provider drops the stored key, model and base URL, because they belong to the old provider; in `--yes` mode you must pass `--api-key` when you switch. Optional flags: `--model`, `--home`, `--base-url`.
+Switching provider drops the stored key, model and base URL, because they belong to the old provider; in `--yes` mode you must pass `--api-key` when you switch. Optional flags: `--model`, `--home`, `--base-url`, `--skill claude,agents` (install the [agent skill](#agent-skill-optional)).
 
 Non-interactive:
 
@@ -290,6 +290,7 @@ jev-answers resend <session>      send an earlier session's request again, in a 
 jev-answers list [--limit N]      newest first (default 20)
 jev-answers show <session> [--path]  print response.json (or error.json), or the folder path
 jev-answers prune --older-than 30d [--yes]
+jev-answers skill <action>        install | uninstall | status | show the optional agent skill
 jev-answers doctor [--live]       effective config with sources, folder check; --live sends one tiny question
 jev-answers config                config file path and effective config (key masked)
 ```
@@ -313,19 +314,30 @@ jev-answers config                config file path and effective config (key mas
 - Userinfo and query strings in `base_url` are masked in `meta.json` and in `config` / `doctor` output. Keys containing whitespace or non-ASCII characters are rejected without being echoed.
 - Session files are written with mode 0600 (folders 0700).
 
-## Teaching your agent when to use it
+## Agent skill (optional)
 
-Paste this into `CLAUDE.md`, `AGENTS.md` or your client's equivalent:
+An MCP tool description teaches an agent *how* to call `jev_ask`. Some clients defer tool descriptions and show only tool names plus the server's short instructions, and none of them say *when* to reach for Jev in your workflow. The optional skill adds that: when to use it, how to gather rules and write the diff, how to phrase questions and how to read the probabilities. It is an [Agent Skills](https://agentskills.io) folder that only loads when relevant.
 
-```markdown
-## Jev (jev_ask)
+| target | path | read by |
+|---|---|---|
+| `claude` | `~/.claude/skills/jev-answers/SKILL.md` | Claude Code, OpenCode |
+| `agents` | `~/.agents/skills/jev-answers/SKILL.md` | Codex, OpenCode, other Agent Skills clients |
 
-Use the `jev_ask` MCP tool when I ask for a check that has a definite yes/no, multiple-choice or graded answer about specific files or written rules (for example reviewing a diff against our rules before a commit).
+With `--project` the same folders are used under the current directory (`./.claude/skills/...`, `./.agents/skills/...`), so a team can commit the skill.
 
-- Write git diffs to a file first and pass the path with a label: `{ git diff main...HEAD; git ls-files --others --exclude-standard -z | xargs -0 -I{} git diff --no-index /dev/null {}; } > /tmp/jev/change.diff` (this also includes untracked files and does not touch the index).
-- Put the written rules and requirements in `context`. Pass only the relevant files.
-- Ask narrow, checkable questions ("Does any changed line log a card number?"), not "is there a bug?". Do arithmetic and counting yourself.
-- Jev returns probabilities. A `noul` value is the probability of YES; 0.5 means it cannot tell. Report the numbers and the session folder path; do not present them as certainties.
+```sh
+jev-answers skill install [--target claude,agents] [--project] [--force]
+jev-answers skill status      # not installed / installed vX (current|outdated) / foreign
+jev-answers skill uninstall [--target claude,agents] [--project]
+jev-answers skill show        # print the rendered SKILL.md
+```
+
+`setup` offers the skill for each client it detects; non-interactively use `setup --yes --skill claude,agents`. Without `--target`, `install` picks `claude` if `claude` is on your PATH and `agents` if `codex` or `opencode` is, or both if none is found. The skill is always copied, never symlinked. A `SKILL.md` that is not ours (no `source: jev-answers` in its frontmatter) is never overwritten without `--force`, and `uninstall` only removes our own file. OpenCode reads both locations, so installing both shows it the same skill twice, which is harmless. Re-run `skill install` after upgrading to refresh it; `skill status` and `doctor` tell you when it is outdated.
+
+Without the skill, put this in `CLAUDE.md` / `AGENTS.md`:
+
+```sh
+jev-answers skill show > /tmp/jev-skill.md   # then paste the body into your instructions file
 ```
 
 ## Troubleshooting

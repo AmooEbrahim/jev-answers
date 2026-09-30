@@ -11,6 +11,7 @@ Usage:
   jev-answers list [--limit N]      List recent sessions (default 20)
   jev-answers show <session> [--path]  Print a session's response (or error), or its folder path
   jev-answers prune --older-than <N>d [--yes]  Delete sessions older than N days
+  jev-answers skill install|uninstall|status|show  Manage the optional agent skill (see below)
   jev-answers doctor [--live]       Show effective config, check the session folder, optionally test the API
   jev-answers config                Print the config file path and effective config
 
@@ -20,6 +21,14 @@ setup options (non-interactive):
   --provider typesafe|openrouter  --api-key KEY  [--model M] [--home DIR] [--base-url URL]
   --yes                           write the config without prompting
   --register claude,codex,opencode  also register the server with these clients
+
+  --skill claude,agents           also install the agent skill (Claude Code / Codex, OpenCode)
+
+skill options:
+  install [--target claude,agents] [--project] [--force]
+  uninstall [--target claude,agents] [--project]
+  status                          show every location; "show" prints the rendered SKILL.md
+  --project uses ./.claude/skills and ./.agents/skills instead of the home directory
 
 Other: --help, --version
 `;

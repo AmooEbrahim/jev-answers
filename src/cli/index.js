@@ -11,6 +11,7 @@ const COMMANDS = {
   list: () => import('./list.js'),
   show: () => import('./show.js'),
   prune: () => import('./prune.js'),
+  skill: () => import('./skill.js'),
   doctor: () => import('./doctor.js'),
   config: () => import('./config.js'),
 };

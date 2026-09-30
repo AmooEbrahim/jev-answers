@@ -10,6 +10,7 @@ export const ErrorType = {
   TOO_MANY_FILES: 'too_many_files',
   MISSING_ARTIFACT: 'missing_artifact',
   SESSION: 'session_error',
+  SKILL_CONFLICT: 'skill_conflict',
   CONTEXT_TOO_LARGE: 'context_too_large',
   AUTH: 'auth_error',
   PAYMENT_REQUIRED: 'payment_required',

@@ -5,7 +5,7 @@ import { tool } from './tool.js';
 
 const SUPPORTED_VERSIONS = ['2025-11-25', '2025-06-18', '2025-03-26', '2024-11-05'];
 const INSTRUCTIONS =
-  'Use jev_ask when you need a calibrated yes/no, multiple-choice or graded judgment about specific files or requirements (for example reviewing a diff against written rules). Ask narrow, checkable questions and pass only the relevant files.';
+  "jev-answers has one tool, jev_ask. It sends files (or a diff you wrote to a file) plus typed questions to TypeSafe's Jev decision model and returns typed answers with calibrated probabilities (noul = probability of yes, choice, score) in about a second, for a fraction of a cent. Use it for fast, checkable judgments about specific files or written rules: checking a diff against project rules or requirements before you finish a task, classifying or triaging text, or grading against a rubric. Do not use it for open-ended review or explanations. It never runs git, so write diffs to a file first. Ask narrow questions; many questions per call are fine.";
 
 const rpcError = (id, code, message) => ({ jsonrpc: '2.0', id: id ?? null, error: { code, message } });
 const rpcResult = (id, result) => ({ jsonrpc: '2.0', id, result });

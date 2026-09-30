@@ -7,6 +7,7 @@ import { ErrorType, JevAnswersError } from '../errors.js';
 import { getProvider, PROVIDER_NAMES } from '../providers/index.js';
 import { parse } from './args.js';
 import { CLIENTS, launchCommand, onPath, snippets } from './launch.js';
+import { detectTargets, inspect, install, location, parseTargets } from '../skill.js';
 import { createPrompter } from './prompt.js';
 import { err, out } from './output.js';
 
@@ -88,6 +89,28 @@ function register(clientName, cmd) {
   }
 }
 
+async function installSkill(target) {
+  const loc = location(target);
+  try {
+    out(`${await install(loc)}: ${loc.file}`);
+  } catch (e) {
+    if (e.type !== ErrorType.SKILL_CONFLICT) throw e;
+    err(`${e.message} (run "jev-answers skill install --force" to replace it)`);
+  }
+}
+
+async function offerSkills(prompt) {
+  for (const target of detectTargets()) {
+    const loc = location(target);
+    const verb = (await inspect(loc)).state === 'ours' ? 'Update' : 'Install';
+    const who = target === 'claude' ? 'Claude Code' : 'Codex / OpenCode / other agents';
+    const answer = await prompt.ask(
+      `\n${verb} the jev-answers skill for ${who} (${loc.display})? It teaches the agent when and how to use jev_ask. [y/N] `,
+    );
+    if (/^y(es)?$/i.test(answer)) await installSkill(target);
+  }
+}
+
 async function offerRegistration(prompt, cmd) {
   for (const name of Object.keys(CLIENTS).filter((client) => onPath(client))) {
     const answer = await prompt.ask(`\nRegister ${NAME} with ${name}? [y/N] `);
@@ -106,12 +129,14 @@ export async function run(argv) {
       'base-url': { type: 'string' },
       yes: { type: 'boolean', default: false },
       register: { type: 'string' },
+      skill: { type: 'string' },
     },
     { allowPositionals: false },
   );
   const file = configPath();
   const existing = await readExisting(file);
 
+  const skillTargets = values.skill ? parseTargets(values.skill) : [];
   let answers;
   let prompt;
   if (values.yes) {
@@ -148,8 +173,10 @@ export async function run(argv) {
         if (!CLIENTS[name]) throw new JevAnswersError(ErrorType.INVALID_INPUT, `Unknown client "${name}" in --register.`);
         register(name, cmd);
       }
+      if (values.skill) for (const target of skillTargets) await installSkill(target);
     } else {
       await offerRegistration(prompt, cmd);
+      await offerSkills(prompt);
     }
     out(`\nManual configuration for other clients:\n\n${snippets(cmd)}`);
     return 0;

@@ -1,6 +1,6 @@
 {
   "name": "jev-answers",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "MCP server and CLI that send files and typed questions to TypeSafe's Jev decision model and return the raw answer.",
   "type": "module",
   "bin": {
@@ -12,6 +12,7 @@
   "files": [
     "bin",
     "src",
+    "skills",
     "README.md",
     "LICENSE",
     "CHANGELOG.md"

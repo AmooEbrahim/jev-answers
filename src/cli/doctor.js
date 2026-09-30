@@ -3,6 +3,7 @@ import path from 'node:path';
 import { loadConfig, redact } from '../config.js';
 import { ask } from '../pipeline.js';
 import { sessionsDir } from '../session.js';
+import { location, status as skillStatus, TARGETS } from '../skill.js';
 import { parse } from './args.js';
 import { out } from './output.js';
 
@@ -32,6 +33,15 @@ export async function run(argv) {
   const homeProblem = await checkHome(values);
   out(homeProblem ? `FAIL  session folder ${sessionsDir(values)} is not writable: ${homeProblem}` : `ok    session folder ${sessionsDir(values)} is writable`);
   ok &&= !homeProblem;
+
+  for (const project of [false, true]) {
+    for (const target of Object.keys(TARGETS)) {
+      const loc = location(target, { project });
+      if (project && loc.dir === location(target).dir) continue; // cwd is the home directory
+      const state = await skillStatus(loc);
+      if (!project || state !== 'not installed') out(`skill ${loc.display}: ${state}`);
+    }
+  }
 
   if (!values.api_key) {
     out('FAIL  no API key configured (run "jev-answers setup")');
